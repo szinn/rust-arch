@@ -1,0 +1,17 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/*"
+]
+
+[workspace.package]
+version = "0.1.0" # managed by release.sh
+edition = "2021"
+authors = ["Scotte Zinn <scotte@zinn.ca>"]
+license = "MIT"
+homepage = "https://github.com/szinn/rust-arch"
+repository = "https://github.com/szinn/rust-arch"
+readme = "README.md"
+rust-version = "1.79"
+
+[workspace.dependencies]

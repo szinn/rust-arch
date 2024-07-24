@@ -1,0 +1,48 @@
+---
+version: "3"
+
+vars:
+  PROJECT_DIR:
+    sh: "git rev-parse --show-toplevel"
+
+includes:
+  pc: .taskfiles/pre-commit.yaml
+
+tasks:
+  test:
+    desc: Run all tests
+    cmds:
+      - cargo test --locked --all-features --all-targets
+      - cargo test --locked --all-features --doc
+
+  format:
+    desc: Format all files
+    cmds:
+      - cargo fmt
+      - prettier -w .
+
+  doc:
+    desc: Create cargo docs
+    cmds:
+      - rm -rf target/doc
+      - cargo doc --no-deps --open
+
+  check-release:
+    desc: Show Changelog
+    cmds:
+      - git cliff --config cliff.toml --tag "vNext"
+
+  create-release:
+    desc: Create a release
+    silent: true
+    cmds:
+      - scripts/release {{.release}}
+    vars:
+      release: '{{ or .release (fail "Argument (release) is required") }}'
+
+  release:
+    desc: Push and build the release
+    silent: true
+    cmds:
+      - git push
+      - git push --tags
