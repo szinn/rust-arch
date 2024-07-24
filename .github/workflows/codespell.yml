@@ -18,9 +18,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Codespell
-        uses: codespell-project/actions-codespell@v2
+        uses: codespell-project/actions-codespell@94259cd8be02ad2903ba34a22d9c13de21a74461 # v2
         with:
           # This is regenerated from commit history
           # we cannot rewrite commit history, and I'd rather not correct it
