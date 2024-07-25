@@ -14,8 +14,8 @@
       in {
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
-            # darwin.apple_sdk.frameworks.SystemConfiguration
-            # libiconv
+            darwin.apple_sdk.frameworks.SystemConfiguration
+            libiconv
           ];
         };
       }

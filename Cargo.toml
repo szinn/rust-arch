@@ -1,11 +1,9 @@
 [workspace]
 resolver = "2"
-members = [
-    "crates/*"
-]
+members = ["crates/*"]
 
 [workspace.package]
-version = "0.1.0" # managed by release.sh
+version = "0.1.0"                                 # managed by release.sh
 edition = "2021"
 authors = ["Scotte Zinn <scotte@zinn.ca>"]
 license = "MIT"
@@ -15,3 +13,12 @@ readme = "README.md"
 rust-version = "1.79"
 
 [workspace.dependencies]
+
+[workspace.dependencies.tokio]
+version = "1.39.1"
+default-features = false
+features = ["full"]
+
+[workspace.dependencies.tracing]
+version = "0.1.40"
+features = ["log"]
