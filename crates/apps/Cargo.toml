@@ -11,3 +11,13 @@ rust-version.workspace = true
 build = "build.rs"
 
 [dependencies]
+anyhow = "1.0.86"
+log = "0.4.22"
+tracing-log = "0.2.0"
+
+tokio.workspace = true
+tracing.workspace = true
+
+[dependencies.tracing-subscriber]
+version = "0.3.18"
+features = ["std", "fmt", "registry", "env-filter", "json"]
