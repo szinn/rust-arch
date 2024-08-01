@@ -13,6 +13,10 @@ readme = "README.md"
 rust-version = "1.79"
 
 [workspace.dependencies]
+arch-api = { path = "crates/api" }
+arch-core = { path = "crates/core"}
+
+async-trait = "0.1.81"
 
 [workspace.dependencies.tokio]
 version = "1.39.1"
