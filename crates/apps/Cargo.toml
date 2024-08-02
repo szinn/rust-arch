@@ -15,9 +15,11 @@ anyhow = "1.0.86"
 log = "0.4.22"
 tracing-log = "0.2.0"
 
+arch-api.workspace = true
 arch-core.workspace = true
 
 tokio.workspace = true
+tokio-graceful-shutdown.workspace = true
 tracing.workspace = true
 
 [dependencies.tracing-subscriber]

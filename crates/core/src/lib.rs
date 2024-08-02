@@ -4,7 +4,7 @@ use health::HealthServiceImpl;
 mod health;
 
 #[async_trait]
-pub trait HealthService {
+pub trait HealthService: Send + Sync {
     async fn is_healthy(&self) -> bool;
 }
 
