@@ -26,3 +26,4 @@ jobs:
           # we cannot rewrite commit history, and I'd rather not correct it
           # every time
           exclude_file: CHANGELOG.md,deny.toml
+          ignore_words_list: crate
