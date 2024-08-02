@@ -14,9 +14,11 @@ rust-version = "1.79"
 
 [workspace.dependencies]
 arch-api = { path = "crates/api" }
-arch-core = { path = "crates/core"}
+arch-core = { path = "crates/core" }
 
 async-trait = "0.1.81"
+thiserror = "1.0.63"
+tokio-graceful-shutdown = "0.15.0"
 
 [workspace.dependencies.tokio]
 version = "1.39.1"
