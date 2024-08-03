@@ -3,7 +3,7 @@ use std::{net::SocketAddr, sync::Arc, time::Duration};
 use arch_core::ArchService;
 
 use axum::{
-    extract::{Request, State},
+    extract::Request,
     response::{IntoResponse, Response},
     routing::get,
     Router,
@@ -16,6 +16,8 @@ use tower::Service;
 use tower_http::timeout::TimeoutLayer;
 
 use crate::ApiError;
+
+pub(crate) mod health;
 
 pub async fn start_server(port: u16, arch_service: Arc<ArchService>, subsys: SubsystemHandle) -> Result<(), ApiError> {
     tracing::trace!("Starting http service");
@@ -48,7 +50,7 @@ pub async fn start_server(port: u16, arch_service: Arc<ArchService>, subsys: Sub
 
 fn get_routes(arch_service: Arc<ArchService>) -> Router<()> {
     axum::Router::new()
-        .route("/health", get(health))
+        .route("/health", get(health::health))
         .with_state(arch_service)
         .layer(TimeoutLayer::new(Duration::from_secs(2)))
 }
@@ -73,14 +75,6 @@ async fn handler(socket: TcpStream, remote_addr: SocketAddr, tower_service: Rout
 
     tracing::debug!("Connection {} closed", remote_addr);
     Ok(())
-}
-
-#[tracing::instrument(level = "trace", skip(arch_service))]
-async fn health(State(arch_service): State<Arc<ArchService>>) -> impl IntoResponse {
-    match arch_service.health_service.is_healthy().await {
-        true => StatusCode::OK,
-        false => StatusCode::BAD_REQUEST,
-    }
 }
 
 impl IntoResponse for ApiError {
