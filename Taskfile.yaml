@@ -44,5 +44,6 @@ tasks:
     desc: Push and build the release
     silent: true
     cmds:
-      - git push
-      - git push --tags
+      - scripts/release {{.release}}
+    vars:
+      release: '{{ or .release (fail "Argument (release) is required") }}'
