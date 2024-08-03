@@ -36,7 +36,7 @@ tasks:
     desc: Create a release
     silent: true
     cmds:
-      - scripts/release {{.release}}
+      - scripts/create-release {{.release}}
     vars:
       release: '{{ or .release (fail "Argument (release) is required") }}'
 
