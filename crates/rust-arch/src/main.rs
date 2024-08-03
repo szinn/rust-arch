@@ -1,6 +1,6 @@
 use std::{sync::Arc, time::Duration};
 
-use arch_api::start_http;
+use arch_api::http::start_server;
 use arch_core::create_service;
 
 use anyhow::Result;
@@ -20,7 +20,7 @@ async fn main() -> Result<()> {
     tracing::info!("Healthy={}", arch_service.health_service.is_healthy().await);
 
     let server = Toplevel::new(|s| async move {
-        s.start(SubsystemBuilder::new("http_api", |h| start_http(3000, arch_service, h)));
+        s.start(SubsystemBuilder::new("http_api", |h| start_server(3000, arch_service, h)));
     })
     .catch_signals()
     .handle_shutdown_requests(Duration::from_secs(5));
