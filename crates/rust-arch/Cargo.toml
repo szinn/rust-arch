@@ -29,7 +29,7 @@ tracing.workspace = true
 
 [dependencies.clap]
 version = "4.5.13"
-features = ["cargo", "derive"]
+features = ["cargo", "derive", "env"]
 
 [dependencies.tracing-subscriber]
 version = "0.3.18"

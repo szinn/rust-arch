@@ -12,7 +12,6 @@ use tower_http::timeout::TimeoutLayer;
 
 use super::health;
 
-
 pub fn get_routes(arch_service: Arc<ArchService>) -> Router<()> {
     axum::Router::new()
         .route("/api/v1/health", get(health::health))
