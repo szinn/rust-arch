@@ -10,7 +10,7 @@ echo "Preparing $1..."
 
 # Update the version
 msg="# managed by release.sh"
-sed -E -i "s/^version = .* $msg$/version = \"${1#v}\" $msg/" Cargo.toml
+sed -E -i "s/^version = .* ${msg}$/version = \"${1#v}\" ${msg}/" Cargo.toml
 echo "${1#v}" > VERSION
 cargo build
 
@@ -33,6 +33,6 @@ changelog=$(git cliff --config cliff.toml --unreleased --strip all)
 
 # create a signed tag
 # git tag -a "$1" -m "Release $1" -m "$changelog"
-echo $changelog
+echo "${changelog}"
 # echo "Done!"
 # echo "Now push the commit (git push) and the tag (git push --tags)."
