@@ -1,6 +1,11 @@
 [workspace]
 resolver = "2"
-members = ["crates/*"]
+members = [
+    "crates/rust-arch",
+    "crates/arch-api",
+    "crates/arch-core",
+    "crates/arch-utils",
+]
 
 [workspace.package]
 version = "0.1.0"                                 # managed by release.sh
@@ -13,8 +18,8 @@ readme = "README.md"
 rust-version = "1.79"
 
 [workspace.dependencies]
-arch-api = { path = "crates/api" }
-arch-core = { path = "crates/core" }
+arch-api = { path = "crates/arch-api" }
+arch-core = { path = "crates/arch-core" }
 
 async-trait = "0.1.81"
 thiserror = "1.0.63"
@@ -28,3 +33,9 @@ features = ["full"]
 [workspace.dependencies.tracing]
 version = "0.1.40"
 features = ["log"]
+
+[profile.release]
+codegen-units = 1 # Compile crates one after another so the compiler can optimize better
+lto = true        # Enables link to optimizations
+opt-level = "s"   # Optimize for binary size
+debug = true      # Enable debug symbols, for profiling

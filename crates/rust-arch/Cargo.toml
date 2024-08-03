@@ -9,6 +9,11 @@ repository.workspace = true
 readme.workspace = true
 rust-version.workspace = true
 build = "build.rs"
+publish = false
+
+[[bin]]
+name = "rust-arch"
+path = "src/main.rs"
 
 [dependencies]
 anyhow = "1.0.86"
@@ -21,6 +26,10 @@ arch-core.workspace = true
 tokio.workspace = true
 tokio-graceful-shutdown.workspace = true
 tracing.workspace = true
+
+[dependencies.clap]
+version = "4.5.13"
+features = ["cargo", "derive"]
 
 [dependencies.tracing-subscriber]
 version = "0.3.18"

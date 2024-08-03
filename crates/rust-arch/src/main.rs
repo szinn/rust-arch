@@ -12,8 +12,11 @@ mod logging;
 async fn main() -> Result<()> {
     logging::init_logging()?;
 
+    let crate_version = clap::crate_version!();
+    let git_revision = env!("BUILD_GIT_HASH");
+
     let arch_service = Arc::new(create_service());
-    tracing::info!("Hello, world!");
+    tracing::info!("RustArch {}-{}", crate_version, git_revision);
     tracing::info!("Healthy={}", arch_service.health_service.is_healthy().await);
 
     let server = Toplevel::new(|s| async move {
