@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Bug Fixes
 
 - _(github-action)_ Update renovatebot/github-action ( v40.2.3 → v40.2.4 )
+- _(release)_ Continue release config ([#21](https://github.com/szinn/rust-arch/issues/21))
 - Don't spell-check deny.toml ([#6](https://github.com/szinn/rust-arch/issues/6))
 - Exclude crate from codespell ([#12](https://github.com/szinn/rust-arch/issues/12))
 
@@ -22,6 +23,10 @@ All notable changes to this project will be documented in this file.
 - Refactor crates ([#16](https://github.com/szinn/rust-arch/issues/16))
 - Refactor http server ([#17](https://github.com/szinn/rust-arch/issues/17))
 - Create server cli command ([#18](https://github.com/szinn/rust-arch/issues/18))
+
+### Miscellaneous Tasks
+
+- _(release)_ Prep for release 0.2.0 ([#20](https://github.com/szinn/rust-arch/issues/20))
 
 ## [0.1.0] - 2024-07-24
 
