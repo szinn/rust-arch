@@ -8,5 +8,6 @@ homepage.workspace = true
 repository.workspace = true
 readme.workspace = true
 rust-version.workspace = true
+publish = false
 
 [dependencies]
