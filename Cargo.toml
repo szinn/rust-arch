@@ -20,6 +20,7 @@ rust-version = "1.80"
 [workspace.dependencies]
 arch-api = { path = "crates/arch-api" }
 arch-core = { path = "crates/arch-core" }
+arch-utils = { path = "crates/arch-utils" }
 
 async-trait = "0.1.81"
 thiserror = "1.0.63"
