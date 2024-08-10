@@ -15,7 +15,7 @@ license = "MIT"
 homepage = "https://github.com/szinn/rust-arch"
 repository = "https://github.com/szinn/rust-arch"
 readme = "README.md"
-rust-version = "1.79"
+rust-version = "1.80"
 
 [workspace.dependencies]
 arch-api = { path = "crates/arch-api" }
