@@ -15,7 +15,7 @@ use super::health;
 pub fn get_routes(arch_service: Arc<ArchService>) -> Router<()> {
     axum::Router::new()
         .route("/api/v1/health", get(health::health))
-        .with_state(arch_service)
+        .with_state(arch_service.health_service.clone())
         .layer(TimeoutLayer::new(Duration::from_secs(2)))
 }
 

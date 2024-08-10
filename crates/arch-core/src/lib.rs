@@ -1,19 +1,17 @@
-use async_trait::async_trait;
+use std::sync::Arc;
+
 use health::HealthServiceImpl;
 
 mod health;
-
-#[async_trait]
-pub trait HealthService: Send + Sync {
-    async fn is_healthy(&self) -> bool;
-}
+pub use health::HealthService;
 
 pub struct ArchService {
-    pub health_service: Box<dyn HealthService>,
+    pub health_service: Arc<Box<dyn HealthService>>,
 }
 
 pub fn create_service() -> ArchService {
-    let health_service = Box::new(HealthServiceImpl {});
+    let health_service = HealthServiceImpl::new();
+    let health_service = Arc::new(Box::new(health_service) as Box<dyn HealthService>);
 
     ArchService { health_service }
 }

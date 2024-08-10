@@ -11,6 +11,6 @@ changelog=$(git cliff --config cliff.toml --unreleased --strip all)
 
 git checkout main
 git fetch -p && git pull
-git tag -a "$1" -m "Release $1" -m "${changelog}" 
+git tag -a "$1" -m "Release $1" -m "${changelog}"
 
 git push --tags
