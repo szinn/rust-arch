@@ -1,5 +1,5 @@
 [package]
-name = "utils"
+name = "arch-utils"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
