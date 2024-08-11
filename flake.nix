@@ -16,6 +16,7 @@
           packages = with pkgs; [
             darwin.apple_sdk.frameworks.SystemConfiguration
             libiconv
+            sea-orm-cli
           ];
         };
       }

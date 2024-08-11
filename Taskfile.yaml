@@ -47,3 +47,19 @@ tasks:
       - scripts/release {{.release}}
     vars:
       release: '{{ or .release (fail "Argument (release) is required") }}'
+
+  dbinit:
+    desc: Create initial remote database and role
+    cmds:
+      - PGHOST=postgres.test.zinn.ca ./scripts/create-database
+
+  migration:
+    desc: Migration commands
+    cmds:
+      - cargo run --bin migrator -- {{.CLI_ARGS}} -u $RUST_ARCH__DATABASE_URL
+
+  entities:
+    desc: Generate entities
+    cmds:
+      - DATABASE_URL=$RUST_ARCH__DATABASE_URL cargo run --bin migrator -- up
+      - sea-orm-cli generate entity -o crates/arch-db/src/entities --with-serde both -u $RUST_ARCH__DATABASE_URL
