@@ -4,11 +4,11 @@ use arch_api::http::start_server;
 use arch_core::create_service;
 
 use anyhow::Result;
-use args::Args;
+use rust_arch::{
+    args::{self, Args},
+    logging,
+};
 use tokio_graceful_shutdown::{SubsystemBuilder, Toplevel};
-
-mod args;
-mod logging;
 
 #[tokio::main]
 async fn main() -> Result<()> {

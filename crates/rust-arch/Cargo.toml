@@ -11,9 +11,19 @@ rust-version.workspace = true
 build = "build.rs"
 publish = false
 
+default-run = "rust-arch"
+
 [[bin]]
 name = "rust-arch"
-path = "src/main.rs"
+path = "src/bin/rust-arch.rs"
+
+[[bin]]
+name = "migrator"
+path = "src/bin/migrator.rs"
+
+[lib]
+name = "rust_arch"
+path = "src/lib.rs"
 
 [dependencies]
 anyhow = "1.0.86"
@@ -22,6 +32,7 @@ tracing-log = "0.2.0"
 
 arch-api.workspace = true
 arch-core.workspace = true
+arch-db.workspace = true
 
 tokio.workspace = true
 tokio-graceful-shutdown.workspace = true
