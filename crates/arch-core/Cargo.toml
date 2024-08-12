@@ -11,6 +11,9 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
+arch-db.workspace = true
 arch-utils.workspace = true
+
 async-trait.workspace = true
+thiserror.workspace = true
 tracing.workspace = true

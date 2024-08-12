@@ -152,8 +152,10 @@ dependencies = [
 name = "arch-core"
 version = "0.2.0"
 dependencies = [
+ "arch-db",
  "arch-utils",
  "async-trait",
+ "thiserror",
  "tracing",
 ]
 
@@ -168,6 +170,7 @@ dependencies = [
  "serde_json",
  "thiserror",
  "tracing",
+ "tracing-log",
 ]
 
 [[package]]

@@ -7,7 +7,11 @@ pub fn init_logging() -> Result<()> {
 
     LogTracer::init_with_filter(log::LevelFilter::Off).context("Unable to setup log tracer")?;
 
-    let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+    let env_filter = EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| EnvFilter::new("info"))
+        .add_directive("sqlx::postgres::notice=off".parse()?)
+        .add_directive("sqlx::query=off".parse()?)
+        .add_directive("sea_orm=off".parse()?);
 
     let formatting_layer = tracing_subscriber::fmt::layer()
         .with_span_events(FmtSpan::NEW | FmtSpan::CLOSE)
