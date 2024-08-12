@@ -8,7 +8,8 @@ pub struct ArchService {
     pub health_service: ArcBox<dyn HealthService>,
 }
 
-pub fn create_service() -> ArchService {
+#[tracing::instrument(level = "trace", skip(_database_url))]
+pub fn create_service(_database_url: &str) -> ArchService {
     let health_service = HealthServiceImpl::new();
     let health_service: ArcBox<dyn HealthService> = arcbox!(health_service);
 
