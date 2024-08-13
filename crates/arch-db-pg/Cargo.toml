@@ -10,14 +10,18 @@ readme.workspace = true
 rust-version.workspace = true
 publish = false
 
-[lib]
-name = "arch_db"
-path = "src/lib.rs"
+build = "build.rs"
 
 [dependencies]
+serde.workspace = true
+serde_json.workspace = true
 thiserror.workspace = true
 tracing.workspace = true
 tracing-log.workspace = true
+
+[dependencies.rust-embed]
+version = "8.3.0"
+features = ["debug-embed"]
 
 [dependencies.sea-orm]
 version = "1.0.0"
