@@ -160,6 +160,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "arch-core-models"
+version = "0.2.0"
+
+[[package]]
 name = "arch-db"
 version = "0.2.0"
 dependencies = [

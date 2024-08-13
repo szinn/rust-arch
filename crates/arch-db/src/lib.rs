@@ -26,6 +26,7 @@ pub async fn create_database_connection(url: &str) -> Result<Arc<DatabaseReposit
     apply_migrations(&database).await?;
 
     let database = Arc::new(DatabaseRepository { database });
+    tracing::debug!("...connected to database");
 
     Ok(database)
 }
