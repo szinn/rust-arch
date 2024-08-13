@@ -4,6 +4,7 @@ use arch_api::http::start_server;
 use arch_core::create_service;
 
 use anyhow::{Context, Result};
+use arch_db::create_database_connection;
 use rust_arch::{
     args::{self, Args},
     config::RustArchConfig,
@@ -24,7 +25,11 @@ async fn main() -> Result<()> {
             let git_revision = env!("BUILD_GIT_HASH");
             tracing::info!("RustArch {}-{}", crate_version, git_revision);
 
-            let arch_service = Arc::new(create_service(&config.database.database_url).await.context("Couldn't create service")?);
+            let database = create_database_connection(&config.database.database_url)
+                .await
+                .context("Couldn't connect to database")?;
+
+            let arch_service = Arc::new(create_service(database).await.context("Couldn't create service")?);
 
             let server = Toplevel::new(|s| async move {
                 s.start(SubsystemBuilder::new("http_api", |h| start_server(3000, arch_service, h)));
