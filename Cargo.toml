@@ -4,6 +4,7 @@ members = [
     "crates/rust-arch",
     "crates/arch-api",
     "crates/arch-core",
+    "crates/arch-core-models",
     "crates/arch-db",
     "crates/arch-utils",
 ]
