@@ -4,10 +4,15 @@ use serde::Deserialize;
 use crate::error::Error;
 
 #[derive(Debug, Deserialize)]
-pub struct RustArchConfig {
+pub struct RustArchDatabaseConfig {
     /// (required) Fully qualified URL for accessing Postgres server.
     /// e.g. postgres://user:password@host/database
     pub database_url: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RustArchConfig {
+    pub database: RustArchDatabaseConfig,
 }
 
 impl RustArchConfig {
