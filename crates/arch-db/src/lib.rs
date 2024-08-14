@@ -3,6 +3,7 @@ use std::sync::Arc;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 pub use sea_orm_migration::prelude::*;
 
+pub mod entities;
 pub mod error;
 pub use error::*;
 use tracing_log::log;
