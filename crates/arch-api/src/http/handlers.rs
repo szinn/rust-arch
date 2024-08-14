@@ -1,7 +1,7 @@
 use crate::ApiError;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 
-use arch_core::ArchService;
+use arch_domain_api::ArchApi;
 use axum::{extract::Request, routing::get, Router};
 use hyper::body::Incoming;
 use hyper_util::rt::TokioIo;
@@ -12,10 +12,10 @@ use tower_http::timeout::TimeoutLayer;
 
 use super::health;
 
-pub fn get_routes(arch_service: Arc<ArchService>) -> Router<()> {
+pub fn get_routes(arch_api: Arc<ArchApi>) -> Router<()> {
     axum::Router::new()
         .route("/api/v1/health", get(health::health))
-        .with_state(arch_service.health_service.clone())
+        .with_state(arch_api.health_api.clone())
         .layer(TimeoutLayer::new(Duration::from_secs(2)))
 }
 

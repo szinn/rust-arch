@@ -31,7 +31,7 @@ config = "0.14.0"
 log = "0.4.22"
 
 arch-api.workspace = true
-arch-core.workspace = true
+arch-domain-core.workspace = true
 arch-db.workspace = true
 
 serde.workspace = true

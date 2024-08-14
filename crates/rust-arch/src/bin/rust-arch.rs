@@ -1,10 +1,10 @@
 use std::{sync::Arc, time::Duration};
 
 use arch_api::http::start_server;
-use arch_core::create_service;
 
 use anyhow::{Context, Result};
 use arch_db::create_database_connection;
+use arch_domain_core::create_service;
 use rust_arch::{
     args::{self, Args},
     config::RustArchConfig,
