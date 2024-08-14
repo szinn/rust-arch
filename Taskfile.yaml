@@ -61,5 +61,5 @@ tasks:
   entities:
     desc: Generate entities
     cmds:
-      - DATABASE_URL=$RUST_ARCH__DATABASE_URL cargo run --bin migrator -- up
-      - sea-orm-cli generate entity -o crates/arch-db/src/entities --with-serde both -u $RUST_ARCH__DATABASE_URL
+      - DATABASE_URL=$RUST_ARCH__DATABASE__DATABASE_URL cargo run --bin migrator -- up
+      - sea-orm-cli generate entity -o crates/arch-db/src/entities --with-serde both -u $RUST_ARCH__DATABASE__DATABASE_URL
