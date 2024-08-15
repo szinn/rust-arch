@@ -1,7 +1,6 @@
 use std::{net::SocketAddr, sync::Arc};
 
-use arch_core::ArchService;
-
+use arch_domain_api::ArchApi;
 use axum::response::{IntoResponse, Response};
 use hyper::StatusCode;
 use tokio::net::TcpListener;
@@ -12,13 +11,13 @@ use crate::ApiError;
 pub(crate) mod handlers;
 pub(crate) mod health;
 
-pub async fn start_server(port: u16, arch_service: Arc<ArchService>, subsys: SubsystemHandle) -> Result<(), ApiError> {
+pub async fn start_server(port: u16, arch_api: Arc<ArchApi>, subsys: SubsystemHandle) -> Result<(), ApiError> {
     tracing::trace!("Starting http service");
 
     let addr: SocketAddr = format!("0.0.0.0:{}", port).parse().map_err(|_| ApiError::BadPort(port))?;
     let listener = TcpListener::bind(addr).await.unwrap();
 
-    let routes = handlers::get_routes(arch_service.clone());
+    let routes = handlers::get_routes(arch_api.clone());
 
     tracing::info!("Listening on port {}", port);
     loop {

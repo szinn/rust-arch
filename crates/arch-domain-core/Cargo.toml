@@ -1,5 +1,5 @@
 [package]
-name = "arch-core-models"
+name = "arch-domain-core"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -8,5 +8,13 @@ homepage.workspace = true
 repository.workspace = true
 readme.workspace = true
 rust-version.workspace = true
+publish = false
 
 [dependencies]
+arch-db.workspace = true
+arch-domain-api.workspace = true
+arch-utils.workspace = true
+
+async-trait.workspace = true
+thiserror.workspace = true
+tracing.workspace = true

@@ -11,7 +11,8 @@ rust-version.workspace = true
 publish = false
 
 [dependencies]
-arch-core.workspace = true
+arch-domain-api.workspace = true
+arch-utils.workspace = true
 
 thiserror.workspace = true
 tokio.workspace = true

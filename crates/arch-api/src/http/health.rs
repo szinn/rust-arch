@@ -1,12 +1,11 @@
-use std::sync::Arc;
-
-use arch_core::HealthService;
+use arch_domain_api::HealthApi;
+use arch_utils::arcbox::ArcBox;
 use axum::{extract::State, response::IntoResponse};
 use hyper::StatusCode;
 
-#[tracing::instrument(level = "trace", skip(health_service))]
-pub(crate) async fn health(State(health_service): State<Arc<Box<dyn HealthService>>>) -> impl IntoResponse {
-    match health_service.is_healthy().await {
+#[tracing::instrument(level = "trace", skip(health_api))]
+pub(crate) async fn health(State(health_api): State<ArcBox<dyn HealthApi>>) -> impl IntoResponse {
+    match health_api.is_healthy().await {
         true => StatusCode::OK,
         false => StatusCode::BAD_REQUEST,
     }

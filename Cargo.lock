@@ -136,7 +136,8 @@ checksum = "b3d1d046238990b9cf5bcde22a3fb3584ee5cf65fb2765f454ed428c7a0063da"
 name = "arch-api"
 version = "0.2.0"
 dependencies = [
- "arch-core",
+ "arch-domain-api",
+ "arch-utils",
  "axum",
  "hyper",
  "hyper-util",
@@ -147,21 +148,6 @@ dependencies = [
  "tower-http",
  "tracing",
 ]
-
-[[package]]
-name = "arch-core"
-version = "0.2.0"
-dependencies = [
- "arch-db",
- "arch-utils",
- "async-trait",
- "thiserror",
- "tracing",
-]
-
-[[package]]
-name = "arch-core-models"
-version = "0.2.0"
 
 [[package]]
 name = "arch-db"
@@ -175,6 +161,32 @@ dependencies = [
  "tracing",
  "tracing-log",
 ]
+
+[[package]]
+name = "arch-domain-api"
+version = "0.2.0"
+dependencies = [
+ "arch-db",
+ "arch-utils",
+ "async-trait",
+ "thiserror",
+]
+
+[[package]]
+name = "arch-domain-core"
+version = "0.2.0"
+dependencies = [
+ "arch-db",
+ "arch-domain-api",
+ "arch-utils",
+ "async-trait",
+ "thiserror",
+ "tracing",
+]
+
+[[package]]
+name = "arch-domain-models"
+version = "0.2.0"
 
 [[package]]
 name = "arch-utils"
@@ -1933,8 +1945,8 @@ version = "0.2.0"
 dependencies = [
  "anyhow",
  "arch-api",
- "arch-core",
  "arch-db",
+ "arch-domain-core",
  "clap",
  "config",
  "log",

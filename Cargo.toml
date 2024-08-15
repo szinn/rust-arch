@@ -3,9 +3,10 @@ resolver = "2"
 members = [
     "crates/rust-arch",
     "crates/arch-api",
-    "crates/arch-core",
-    "crates/arch-core-models",
     "crates/arch-db",
+    "crates/arch-domain-api",
+    "crates/arch-domain-core",
+    "crates/arch-domain-models",
     "crates/arch-utils",
 ]
 
@@ -21,8 +22,10 @@ rust-version = "1.80"
 
 [workspace.dependencies]
 arch-api = { path = "crates/arch-api" }
-arch-core = { path = "crates/arch-core" }
 arch-db = { path = "crates/arch-db" }
+arch-domain-api = { path = "crates/arch-domain-api" }
+arch-domain-core = { path = "crates/arch-domain-core" }
+arch-domain-models = { path = "crates/arch-domain-models" }
 arch-utils = { path = "crates/arch-utils" }
 
 async-trait = "0.1.81"
