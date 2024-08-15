@@ -19,11 +19,11 @@ impl MigratorTrait for Migrator {
     }
 }
 
-pub struct DatabaseRepository {
+pub struct Repository {
     pub database: DatabaseConnection,
 }
 
-pub async fn create_database_connection(url: &str) -> Result<Arc<DatabaseRepository>, Error> {
+pub async fn connect_database(url: &str) -> Result<Arc<Repository>, Error> {
     tracing::debug!("Connecting to database...");
     let mut opt = ConnectOptions::new(url);
     opt.max_connections(100)
@@ -34,7 +34,7 @@ pub async fn create_database_connection(url: &str) -> Result<Arc<DatabaseReposit
     let database = Database::connect(opt).await.map_err(handle_dberr)?;
     Migrator::up(&database, None).await?;
 
-    let database = Arc::new(DatabaseRepository { database });
+    let database = Arc::new(Repository { database });
     tracing::debug!("...connected to database");
 
     Ok(database)
