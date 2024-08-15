@@ -53,6 +53,11 @@ tasks:
     cmds:
       - PGHOST=postgres.test.zinn.ca ./scripts/create-database
 
+  db:
+    desc: Connect to database
+    cmds:
+      - PGUSER=$PGADMINUSER PGPASSWORD=$PGADMINPASSWORD psql -h $PGHOST -d $PGDATABASE
+
   migration:
     desc: Migration commands
     cmds:

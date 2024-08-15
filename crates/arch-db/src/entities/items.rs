@@ -4,11 +4,12 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize, Deserialize)]
-#[sea_orm(table_name = "post")]
+#[sea_orm(table_name = "items")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    pub title: String,
+    #[sea_orm(unique)]
+    pub uuid: Uuid,
     pub text: String,
 }
 
