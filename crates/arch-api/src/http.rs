@@ -9,7 +9,7 @@ use tokio_graceful_shutdown::{SubsystemBuilder, SubsystemHandle};
 use crate::ApiError;
 
 pub(crate) mod handlers;
-pub(crate) mod health;
+pub(crate) mod v1;
 
 pub async fn start_server(port: u16, arch_api: Arc<ArchApi>, subsys: SubsystemHandle) -> Result<(), ApiError> {
     tracing::trace!("Starting http service");

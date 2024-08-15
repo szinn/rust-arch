@@ -1,16 +1,16 @@
 use std::sync::Arc;
 
-use arch_db::DatabaseRepository;
+use arch_db::Repository;
 use arch_domain_api::HealthApi;
 use async_trait::async_trait;
 
 #[derive(Clone)]
 pub(crate) struct HealthService {
-    repository: Arc<DatabaseRepository>,
+    repository: Arc<Repository>,
 }
 
 impl HealthService {
-    pub(crate) fn new(repository: Arc<DatabaseRepository>) -> Self {
+    pub(crate) fn new(repository: Arc<Repository>) -> Self {
         Self { repository }
     }
 }

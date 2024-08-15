@@ -10,11 +10,11 @@ use tokio_graceful_shutdown::SubsystemHandle;
 use tower::Service;
 use tower_http::timeout::TimeoutLayer;
 
-use super::health;
+use super::v1;
 
 pub fn get_routes(arch_api: Arc<ArchApi>) -> Router<()> {
     axum::Router::new()
-        .route("/api/v1/health", get(health::health))
+        .route("/api/v1/health", get(v1::health::health))
         .with_state(arch_api.health_api.clone())
         .layer(TimeoutLayer::new(Duration::from_secs(2)))
 }

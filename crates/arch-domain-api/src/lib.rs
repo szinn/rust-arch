@@ -1,9 +1,9 @@
+mod error;
 mod health;
 
-pub mod error;
-pub use error::Error;
-
 use arch_utils::arcbox::ArcBox;
+
+pub use error::Error;
 pub use health::HealthApi;
 
 pub struct ArchApi {
