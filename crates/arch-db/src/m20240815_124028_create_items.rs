@@ -12,6 +12,7 @@ impl MigrationTrait for Migration {
                     .table(Items::Table)
                     .if_not_exists()
                     .col(ColumnDef::new(Items::Id).integer().not_null().auto_increment().primary_key())
+                    .col(ColumnDef::new(Items::Version).integer().default(0).not_null())
                     .col(ColumnDef::new(Items::Uuid).uuid().not_null().unique_key())
                     .col(ColumnDef::new(Items::Text).string().string_len(200).not_null())
                     .to_owned(),
@@ -43,6 +44,7 @@ impl MigrationTrait for Migration {
 enum Items {
     Table,
     Id,
+    Version,
     Uuid,
     Text,
     #[sea_orm(iden = "idx_items_uuid")]
