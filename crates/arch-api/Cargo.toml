@@ -14,10 +14,13 @@ publish = false
 arch-domain-api.workspace = true
 arch-utils.workspace = true
 
+serde.workspace = true
+serde_json.workspace = true
 thiserror.workspace = true
 tokio.workspace = true
 tokio-graceful-shutdown.workspace = true
 tracing.workspace = true
+uuid.workspace = true
 
 axum = "0.7.5"
 

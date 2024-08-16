@@ -11,7 +11,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.2.0" # managed by release.sh
+version = "0.2.0"                                 # managed by release.sh
 edition = "2021"
 authors = ["Scotte Zinn <scotte@zinn.ca>"]
 license = "MIT"
@@ -46,6 +46,10 @@ features = ["full"]
 [workspace.dependencies.tracing]
 version = "0.1.40"
 features = ["log"]
+
+[workspace.dependencies.uuid]
+version = "1.10.0"
+features = ["serde", "v4"]
 
 [profile.release]
 codegen-units = 1 # Compile crates one after another so the compiler can optimize better
