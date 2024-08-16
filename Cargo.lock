@@ -170,6 +170,7 @@ name = "arch-domain-api"
 version = "0.2.0"
 dependencies = [
  "arch-db",
+ "arch-domain-models",
  "arch-utils",
  "async-trait",
  "thiserror",
@@ -181,6 +182,7 @@ version = "0.2.0"
 dependencies = [
  "arch-db",
  "arch-domain-api",
+ "arch-domain-models",
  "arch-utils",
  "async-trait",
  "thiserror",
@@ -190,6 +192,9 @@ dependencies = [
 [[package]]
 name = "arch-domain-models"
 version = "0.2.0"
+dependencies = [
+ "uuid",
+]
 
 [[package]]
 name = "arch-utils"
