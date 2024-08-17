@@ -12,6 +12,7 @@ publish = false
 
 [dependencies]
 arch-domain-api.workspace = true
+arch-domain-models.workspace = true
 arch-utils.workspace = true
 
 serde.workspace = true

@@ -13,10 +13,17 @@ use tower_http::timeout::TimeoutLayer;
 use uuid::Uuid;
 
 #[derive(Debug, Serialize)]
-struct Item {}
+struct Item {
+    pub id: i64,
+    pub version: i32,
+    pub uuid: Uuid,
+    pub text: String,
+}
 
 #[derive(Deserialize)]
-struct ItemParams {}
+struct ItemParams {
+    text: String,
+}
 
 pub(crate) fn get_routes(arch_api: Arc<ArchApi>) -> Router<()> {
     Router::new()
@@ -31,14 +38,23 @@ async fn get_item(Path(_id): Path<Uuid>) -> Result<Json<Item>, StatusCode> {
     Err(StatusCode::BAD_REQUEST)
 }
 
-#[tracing::instrument(level = "trace", skip(item_api, _params))]
-async fn create_item(State(item_api): State<ArcBox<dyn ItemApi>>, Json(_params): Json<ItemParams>) -> Json<Item> {
-    let new_item = NewItem {
-        text: "This is text".to_string(),
-    };
-    let _item = item_api.create_item(&new_item).await;
+#[tracing::instrument(level = "trace", skip(item_api, params))]
+async fn create_item(State(item_api): State<ArcBox<dyn ItemApi>>, Json(params): Json<ItemParams>) -> Result<Json<Item>, StatusCode> {
+    let new_item = NewItem { text: params.text };
 
-    let item = Item {};
+    match item_api.create_item(&new_item).await {
+        Err(_) => Err(StatusCode::BAD_REQUEST),
+        Ok(item) => Ok(Json(item.into())),
+    }
+}
 
-    Json(item)
+impl From<arch_domain_models::item::Item> for Item {
+    fn from(value: arch_domain_models::item::Item) -> Self {
+        Item {
+            id: value.id,
+            version: value.version,
+            uuid: value.uuid,
+            text: value.text,
+        }
+    }
 }

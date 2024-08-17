@@ -137,6 +137,7 @@ name = "arch-api"
 version = "0.2.0"
 dependencies = [
  "arch-domain-api",
+ "arch-domain-models",
  "arch-utils",
  "axum",
  "hyper",
