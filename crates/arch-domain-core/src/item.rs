@@ -1,17 +1,16 @@
-use std::sync::Arc;
-
-use arch_db::Repository;
-use arch_domain_api::{item::NewItem, Error, ItemApi};
-use arch_domain_models::item::Item;
+use arch_db::adapters::ItemAdapter;
+use arch_domain_api::{Error, ItemApi};
+use arch_domain_models::item::{Item, NewItem};
+use arch_utils::arcbox::ArcBox;
 use async_trait::async_trait;
 
 #[derive(Clone)]
 pub(crate) struct ItemService {
-    repository: Arc<Repository>,
+    repository: ArcBox<dyn ItemAdapter>,
 }
 
 impl ItemService {
-    pub(crate) fn new(repository: Arc<Repository>) -> Self {
+    pub(crate) fn new(repository: ArcBox<dyn ItemAdapter>) -> Self {
         Self { repository }
     }
 }

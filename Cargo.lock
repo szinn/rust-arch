@@ -157,6 +157,8 @@ dependencies = [
 name = "arch-db"
 version = "0.2.0"
 dependencies = [
+ "arch-domain-models",
+ "arch-utils",
  "sea-orm",
  "sea-orm-migration",
  "serde",

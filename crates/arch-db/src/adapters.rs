@@ -1,9 +1,11 @@
 use arch_domain_models::item::{Item, NewItem};
-use async_trait::async_trait;
+use sea_orm_migration::async_trait::async_trait;
 
 use crate::Error;
 
+pub(crate) mod item;
+
 #[async_trait]
-pub trait ItemApi: Send + Sync {
+pub trait ItemAdapter: Send + Sync {
     async fn create_item(&self, new_item: &NewItem) -> Result<Item, Error>;
 }

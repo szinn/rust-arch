@@ -1,6 +1,11 @@
 use uuid::Uuid;
 
 #[derive(Debug)]
+pub struct NewItem {
+    pub text: String,
+}
+
+#[derive(Debug)]
 pub struct Item {
     pub id: i64,
     pub version: i32,

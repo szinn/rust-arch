@@ -1,8 +1,11 @@
 use std::sync::Arc;
 
+use adapters::{item::ItemAdapterImpl, ItemAdapter};
+use arch_utils::{arcbox, arcbox::ArcBox};
 use sea_orm::{ConnectOptions, Database, DatabaseConnection};
 pub use sea_orm_migration::prelude::*;
 
+pub mod adapters;
 pub mod entities;
 pub mod error;
 pub use error::*;
@@ -23,7 +26,12 @@ pub struct Repository {
     pub database: DatabaseConnection,
 }
 
-pub async fn connect_database(url: &str) -> Result<Arc<Repository>, Error> {
+pub struct RepositoryAdapters {
+    pub repository: Arc<Repository>,
+    pub item_adapter: ArcBox<dyn ItemAdapter>,
+}
+
+pub async fn connect_database(url: &str) -> Result<Arc<RepositoryAdapters>, Error> {
     tracing::debug!("Connecting to database...");
     let mut opt = ConnectOptions::new(url);
     opt.max_connections(100)
@@ -35,7 +43,14 @@ pub async fn connect_database(url: &str) -> Result<Arc<Repository>, Error> {
     Migrator::up(&database, None).await?;
     tracing::debug!("...connected to database");
 
-    Ok(Arc::new(Repository { database }))
+    let repository = Arc::new(Repository { database });
+
+    let item_adapter = ItemAdapterImpl::new(repository.clone());
+    let item_adapter: ArcBox<dyn ItemAdapter> = arcbox!(item_adapter);
+
+    let adapters = Arc::new(RepositoryAdapters { repository, item_adapter });
+
+    Ok(adapters)
 }
 
 pub async fn run_migration_cli() {
