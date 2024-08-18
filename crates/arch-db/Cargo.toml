@@ -15,6 +15,9 @@ name = "arch_db"
 path = "src/lib.rs"
 
 [dependencies]
+arch-domain-models.workspace = true
+arch-utils.workspace = true
+
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true

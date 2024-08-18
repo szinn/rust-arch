@@ -13,6 +13,7 @@ publish = false
 [dependencies]
 arch-db.workspace = true
 arch-domain-api.workspace = true
+arch-domain-models.workspace = true
 arch-utils.workspace = true
 
 async-trait.workspace = true

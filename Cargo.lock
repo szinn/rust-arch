@@ -137,22 +137,28 @@ name = "arch-api"
 version = "0.2.0"
 dependencies = [
  "arch-domain-api",
+ "arch-domain-models",
  "arch-utils",
  "axum",
  "hyper",
  "hyper-util",
+ "serde",
+ "serde_json",
  "thiserror",
  "tokio",
  "tokio-graceful-shutdown",
  "tower",
  "tower-http",
  "tracing",
+ "uuid",
 ]
 
 [[package]]
 name = "arch-db"
 version = "0.2.0"
 dependencies = [
+ "arch-domain-models",
+ "arch-utils",
  "sea-orm",
  "sea-orm-migration",
  "serde",
@@ -167,6 +173,7 @@ name = "arch-domain-api"
 version = "0.2.0"
 dependencies = [
  "arch-db",
+ "arch-domain-models",
  "arch-utils",
  "async-trait",
  "thiserror",
@@ -178,6 +185,7 @@ version = "0.2.0"
 dependencies = [
  "arch-db",
  "arch-domain-api",
+ "arch-domain-models",
  "arch-utils",
  "async-trait",
  "thiserror",
@@ -187,6 +195,9 @@ dependencies = [
 [[package]]
 name = "arch-domain-models"
 version = "0.2.0"
+dependencies = [
+ "uuid",
+]
 
 [[package]]
 name = "arch-utils"
@@ -3135,6 +3146,7 @@ version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81dfa00651efa65069b0b6b651f4aaa31ba9e3c3ce0137aaad053604ee7e0314"
 dependencies = [
+ "getrandom",
  "serde",
 ]
 
