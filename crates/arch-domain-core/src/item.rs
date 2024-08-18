@@ -17,10 +17,11 @@ impl ItemService {
 
 #[async_trait]
 impl ItemApi for ItemService {
-    #[tracing::instrument(level = "trace", skip(self, _new_item))]
-    async fn create_item(&self, _new_item: &NewItem) -> Result<Item, Error> {
-        let _ = self.repository.clone();
-
-        Err(Error::Message("Todo".to_string()))
+    #[tracing::instrument(level = "trace", skip(self, new_item))]
+    async fn create_item(&self, new_item: &NewItem) -> Result<Item, Error> {
+        match self.repository.create_item(new_item).await {
+            Ok(item) => Ok(item),
+            Err(err) => Err(Error::DatabaseError(err)),
+        }
     }
 }
