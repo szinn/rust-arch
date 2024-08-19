@@ -1,6 +1,6 @@
 use arch_db::{adapters::ItemAdapter, sea_orm::prelude::Uuid};
 use arch_domain_api::{Error, ItemApi};
-use arch_domain_models::item::{Item, NewItem};
+use arch_domain_models::item::{Item, NewItem, UpdateItem};
 use arch_utils::arcbox::ArcBox;
 use async_trait::async_trait;
 
@@ -28,6 +28,14 @@ impl ItemApi for ItemService {
     #[tracing::instrument(level = "trace", skip(self))]
     async fn get_item(&self, uuid: &Uuid) -> Result<Option<Item>, Error> {
         match self.repository.get_item(uuid).await {
+            Err(err) => Err(Error::DatabaseError(err)),
+            Ok(item) => Ok(item),
+        }
+    }
+
+    #[tracing::instrument(level = "trace", skip(self))]
+    async fn update_item(&self, uuid: &Uuid, update_item: &UpdateItem) -> Result<Item, Error> {
+        match self.repository.update_item(uuid, update_item).await {
             Err(err) => Err(Error::DatabaseError(err)),
             Ok(item) => Ok(item),
         }
