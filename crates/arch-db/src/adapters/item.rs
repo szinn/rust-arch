@@ -1,10 +1,13 @@
 use std::sync::Arc;
 
 use arch_domain_models::item::{Item, NewItem};
-use sea_orm::{prelude::Uuid, ActiveModelTrait, Set, TransactionTrait};
+use sea_orm::{prelude::Uuid, ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set, TransactionTrait};
 use sea_orm_migration::async_trait::async_trait;
 
-use crate::{entities::items, Error, Repository};
+use crate::{
+    entities::{items, prelude},
+    Error, Repository,
+};
 
 use super::ItemAdapter;
 
@@ -43,5 +46,18 @@ impl ItemAdapter for ItemAdapterImpl {
         tx.commit().await?;
 
         Ok(ItemAdapterImpl::from_model(item))
+    }
+
+    #[tracing::instrument(level = "trace", skip(self))]
+    async fn get_item(&self, uuid: &Uuid) -> Result<Option<Item>, Error> {
+        let model = prelude::Items::find()
+            .filter(items::Column::Uuid.eq(*uuid))
+            .one(&self.repository.database)
+            .await?;
+
+        match model {
+            None => Ok(None),
+            Some(model) => Ok(Some(ItemAdapterImpl::from_model(model))),
+        }
     }
 }

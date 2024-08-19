@@ -5,4 +5,7 @@ pub enum Error {
 
     #[error(transparent)]
     DatabaseError(#[from] arch_db::Error),
+
+    #[error("Not found")]
+    NotFound,
 }
