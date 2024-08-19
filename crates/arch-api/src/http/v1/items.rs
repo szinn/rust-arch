@@ -28,15 +28,19 @@ struct ItemParams {
 
 pub(crate) fn get_routes(arch_api: Arc<ArchApi>) -> Router<()> {
     Router::new()
-        .route("/:id", get(get_item))
+        .route("/:uuid", get(get_item))
         .route("/", post(create_item))
         .with_state(arch_api.item_api.clone())
         .layer(TimeoutLayer::new(Duration::from_secs(2)))
 }
 
-#[tracing::instrument(level = "trace", skip(_id))]
-async fn get_item(Path(_id): Path<Uuid>) -> Result<Json<Item>, StatusCode> {
-    Err(StatusCode::BAD_REQUEST)
+#[tracing::instrument(level = "trace", skip(item_api, uuid))]
+async fn get_item(State(item_api): State<ArcBox<dyn ItemApi>>, Path(uuid): Path<Uuid>) -> Result<Json<Item>, StatusCode> {
+    match item_api.get_item(&uuid).await {
+        Err(_) => Err(StatusCode::BAD_REQUEST),
+        Ok(Some(item)) => Ok(Json(item.into())),
+        Ok(None) => Err(StatusCode::NOT_FOUND),
+    }
 }
 
 #[tracing::instrument(level = "trace", skip(item_api, params))]
