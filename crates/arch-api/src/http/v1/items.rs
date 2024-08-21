@@ -1,7 +1,7 @@
 use std::{sync::Arc, time::Duration};
 
 use arch_domain_api::{ArchApi, ItemApi};
-use arch_domain_models::item::{NewItem, UpdateItem};
+use arch_domain_models::item::NewItem;
 use arch_utils::arcbox::ArcBox;
 use axum::{
     extract::{Path, State},
@@ -28,7 +28,6 @@ struct NewItemParams {
 
 #[derive(Debug, Deserialize)]
 struct UpdateItemParams {
-    version: i32,
     text: String,
 }
 
@@ -66,12 +65,14 @@ async fn update_item(
     Path(uuid): Path<Uuid>,
     Json(params): Json<UpdateItemParams>,
 ) -> Result<Json<Item>, StatusCode> {
-    let update_item = UpdateItem {
-        version: params.version,
-        text: params.text,
+    let mut item = match item_api.get_item(&uuid).await {
+        Ok(Some(item)) => item,
+        Ok(None) => return Err(StatusCode::NOT_FOUND),
+        Err(_) => return Err(StatusCode::BAD_REQUEST),
     };
+    item.text = params.text;
 
-    match item_api.update_item(&uuid, &update_item).await {
+    match item_api.update_item(&item).await {
         Ok(item) => Ok(Json(item.into())),
         Err(_) => Err(StatusCode::BAD_REQUEST),
     }

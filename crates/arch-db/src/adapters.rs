@@ -1,4 +1,4 @@
-use arch_domain_models::item::{Item, NewItem, UpdateItem};
+use arch_domain_models::item::{Item, NewItem};
 use sea_orm::prelude::Uuid;
 use sea_orm_migration::async_trait::async_trait;
 
@@ -10,5 +10,5 @@ pub(crate) mod item;
 pub trait ItemAdapter: Send + Sync {
     async fn create_item(&self, new_item: &NewItem) -> Result<Item, Error>;
     async fn get_item(&self, uuid: &Uuid) -> Result<Option<Item>, Error>;
-    async fn update_item(&self, uuid: &Uuid, update_item: &UpdateItem) -> Result<Item, Error>;
+    async fn update_item(&self, item: &Item) -> Result<Item, Error>;
 }
