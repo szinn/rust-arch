@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use arch_domain_models::item::{Item, NewItem, UpdateItem};
+use arch_domain_models::item::{Item, NewItem};
 use sea_orm::{prelude::Uuid, ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set, TransactionTrait};
 use sea_orm_migration::async_trait::async_trait;
 
@@ -62,31 +62,31 @@ impl ItemAdapter for ItemAdapterImpl {
     }
 
     #[tracing::instrument(level = "trace", skip(self))]
-    async fn update_item(&self, uuid: &Uuid, update_item: &UpdateItem) -> Result<Item, Error> {
+    async fn update_item(&self, item: &Item) -> Result<Item, Error> {
         let tx = self.repository.database.begin().await?;
 
-        let model = prelude::Items::find().filter(items::Column::Uuid.eq(*uuid)).one(&tx).await?;
+        let model = prelude::Items::find().filter(items::Column::Uuid.eq(item.uuid)).one(&tx).await?;
 
         let model = match model {
             Some(model) => model,
-            None => return Err(Error::SeaOrm(sea_orm::DbErr::RecordNotFound(uuid.to_string()))),
+            None => return Err(Error::SeaOrm(sea_orm::DbErr::RecordNotFound(item.uuid.to_string()))),
         };
 
-        if model.version != update_item.version {
+        if model.version != item.version {
             return Err(Error::SeaOrm(sea_orm::DbErr::RecordNotUpdated));
         }
 
         let new_version = model.version + 1;
         let mut new_model: items::ActiveModel = model.into();
-        new_model.text = Set(update_item.text.clone());
+        new_model.text = Set(item.text.clone());
         new_model.version = Set(new_version);
 
         new_model.update(&tx).await?;
 
-        let model = prelude::Items::find().filter(items::Column::Uuid.eq(*uuid)).one(&tx).await?;
+        let model = prelude::Items::find().filter(items::Column::Uuid.eq(item.uuid)).one(&tx).await?;
 
         let item = match model {
-            None => return Err(Error::SeaOrm(sea_orm::DbErr::RecordNotFound(uuid.to_string()))),
+            None => return Err(Error::SeaOrm(sea_orm::DbErr::RecordNotFound(item.uuid.to_string()))),
             Some(model) => ItemAdapterImpl::from_model(model),
         };
 

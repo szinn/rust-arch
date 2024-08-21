@@ -6,12 +6,6 @@ pub struct NewItem {
 }
 
 #[derive(Debug)]
-pub struct UpdateItem {
-    pub version: i32,
-    pub text: String,
-}
-
-#[derive(Debug)]
 pub struct Item {
     pub id: i64,
     pub version: i32,
