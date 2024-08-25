@@ -1,8 +1,8 @@
-use std::sync::Arc;
+use std::{future::Future, pin::Pin, sync::Arc};
 
 use adapters::{item::ItemAdapterImpl, ItemAdapter};
 use arch_utils::{arcbox, arcbox::ArcBox};
-use sea_orm::{ConnectOptions, Database, DatabaseConnection};
+use sea_orm::{ConnectOptions, Database, DatabaseConnection, DatabaseTransaction, TransactionTrait};
 pub use sea_orm_migration::prelude::*;
 
 pub mod adapters;
@@ -24,6 +24,24 @@ impl MigratorTrait for Migrator {
 
 pub struct Repository {
     pub database: DatabaseConnection,
+}
+
+impl Repository {
+    pub async fn transaction<F, T>(&self, operation: F) -> Result<T, Error>
+    where
+        F: FnOnce(&mut DatabaseTransaction) -> Pin<Box<dyn Future<Output = Result<T, Error>> + '_ + Send>>,
+    {
+        let mut tx = self.database.begin().await?;
+
+        let result = operation(&mut tx).await;
+        if result.is_err() {
+            tx.rollback().await?
+        } else {
+            tx.commit().await?;
+        }
+
+        result
+    }
 }
 
 pub struct RepositoryAdapters {
