@@ -8,5 +8,5 @@ use crate::Error;
 pub trait ItemApi: Send + Sync {
     async fn create_item(&self, new_item: &NewItem) -> Result<Item, Error>;
     async fn get_item(&self, uuid: &Uuid) -> Result<Option<Item>, Error>;
-    async fn update_item(&self, item: &Item) -> Result<Item, Error>;
+    async fn update_item_text(&self, uuid: &Uuid, text: &str) -> Result<Item, Error>;
 }

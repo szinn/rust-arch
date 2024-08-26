@@ -14,7 +14,7 @@ mod item;
 #[tracing::instrument(level = "trace", skip(repository_adapters))]
 pub async fn create_arch(repository_adapters: Arc<RepositoryAdapters>) -> Result<ArchApi, Error> {
     let health_service = HealthService::new(repository_adapters.repository.clone());
-    let item_service = ItemService::new(repository_adapters.item_adapter.clone());
+    let item_service = ItemService::new(repository_adapters.repository.clone(), repository_adapters.item_adapter.clone());
 
     let health_api: ArcBox<dyn HealthApi> = arcbox!(health_service);
     let item_api: ArcBox<dyn ItemApi> = arcbox!(item_service);

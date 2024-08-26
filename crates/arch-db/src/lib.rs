@@ -1,8 +1,8 @@
-use std::sync::Arc;
+use std::{future::Future, pin::Pin, sync::Arc};
 
 use adapters::{item::ItemAdapterImpl, ItemAdapter};
 use arch_utils::{arcbox, arcbox::ArcBox};
-use sea_orm::{ConnectOptions, Database, DatabaseConnection};
+use sea_orm::{ConnectOptions, Database, DatabaseConnection, DatabaseTransaction, TransactionTrait};
 pub use sea_orm_migration::prelude::*;
 
 pub mod adapters;
@@ -26,6 +26,24 @@ pub struct Repository {
     pub database: DatabaseConnection,
 }
 
+impl Repository {
+    pub async fn transaction<F, T>(&self, operation: F) -> Result<T, Error>
+    where
+        F: FnOnce(&mut DatabaseTransaction) -> Pin<Box<dyn Future<Output = Result<T, Error>> + '_ + Send>>,
+    {
+        let mut tx = self.database.begin().await?;
+
+        let result = operation(&mut tx).await;
+        if result.is_err() {
+            tx.rollback().await?
+        } else {
+            tx.commit().await?;
+        }
+
+        result
+    }
+}
+
 pub struct RepositoryAdapters {
     pub repository: Arc<Repository>,
     pub item_adapter: ArcBox<dyn ItemAdapter>,
@@ -45,7 +63,7 @@ pub async fn connect_database(url: &str) -> Result<Arc<RepositoryAdapters>, Erro
 
     let repository = Arc::new(Repository { database });
 
-    let item_adapter = ItemAdapterImpl::new(repository.clone());
+    let item_adapter = ItemAdapterImpl::new();
     let item_adapter: ArcBox<dyn ItemAdapter> = arcbox!(item_adapter);
 
     let adapters = Arc::new(RepositoryAdapters { repository, item_adapter });
