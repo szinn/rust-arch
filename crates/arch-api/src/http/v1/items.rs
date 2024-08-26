@@ -1,6 +1,6 @@
 use std::{sync::Arc, time::Duration};
 
-use arch_domain_api::{ArchApi, ItemApi};
+use arch_domain_api::{ArchApi, Error, ItemApi};
 use arch_domain_models::item::NewItem;
 use arch_utils::arcbox::ArcBox;
 use axum::{
@@ -65,15 +65,9 @@ async fn update_item(
     Path(uuid): Path<Uuid>,
     Json(params): Json<UpdateItemParams>,
 ) -> Result<Json<Item>, StatusCode> {
-    let mut item = match item_api.get_item(&uuid).await {
-        Ok(Some(item)) => item,
-        Ok(None) => return Err(StatusCode::NOT_FOUND),
-        Err(_) => return Err(StatusCode::BAD_REQUEST),
-    };
-    item.text = params.text;
-
-    match item_api.update_item(&item).await {
+    match item_api.update_item_text(&uuid, &params.text).await {
         Ok(item) => Ok(Json(item.into())),
+        Err(Error::NotFound) => Err(StatusCode::NOT_FOUND),
         Err(_) => Err(StatusCode::BAD_REQUEST),
     }
 }

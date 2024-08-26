@@ -42,9 +42,16 @@ impl ItemApi for ItemService {
         }
     }
 
-    #[tracing::instrument(level = "trace", skip(self))]
-    async fn update_item(&self, item: &Item) -> Result<Item, Error> {
-        match self.item_adapter.update_item(item).await {
+    #[tracing::instrument(level = "trace", skip(self, text))]
+    async fn update_item_text(&self, uuid: &Uuid, text: &str) -> Result<Item, Error> {
+        let mut item = match self.get_item(uuid).await {
+            Ok(Some(item)) => item,
+            Ok(None) => return Err(Error::NotFound),
+            Err(err) => return Err(err),
+        };
+        item.text = text.to_string();
+
+        match self.item_adapter.update_item(&item).await {
             Err(err) => Err(Error::DatabaseError(err)),
             Ok(item) => Ok(item),
         }
