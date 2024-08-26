@@ -52,14 +52,28 @@ impl ItemApi for ItemService {
 
     #[tracing::instrument(level = "trace", skip(self, text))]
     async fn update_item_text(&self, uuid: &Uuid, text: &str) -> Result<Item, Error> {
-        let mut item = match self.get_item(uuid).await {
-            Ok(Some(item)) => item,
-            Ok(None) => return Err(Error::NotFound),
-            Err(err) => return Err(err),
-        };
-        item.text = text.to_string();
+        let adapter = self.item_adapter.clone();
+        let uuid = *uuid;
+        let text = text.to_string();
 
-        match self.item_adapter.update_item(&item).await {
+        let result: Result<Item, arch_db::Error> = self
+            .repository
+            .transaction(|tx| {
+                Box::pin(async move {
+                    match adapter.get_item(tx, &uuid).await {
+                        Ok(Some(mut item)) => {
+                            item.text = text;
+                            adapter.update_item(tx, &item).await
+                        }
+                        Ok(None) => Err(arch_db::Error::NotFound),
+                        Err(err) => Err(err),
+                    }
+                })
+            })
+            .await;
+
+        match result {
+            Err(arch_db::Error::NotFound) => Err(Error::NotFound),
             Err(err) => Err(Error::DatabaseError(err)),
             Ok(item) => Ok(item),
         }

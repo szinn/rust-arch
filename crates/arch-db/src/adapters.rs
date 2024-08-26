@@ -10,5 +10,5 @@ pub(crate) mod item;
 pub trait ItemAdapter: Send + Sync {
     async fn create_item(&self, tx: &mut DatabaseTransaction, new_item: &NewItem) -> Result<Item, Error>;
     async fn get_item(&self, tx: &mut DatabaseTransaction, uuid: &Uuid) -> Result<Option<Item>, Error>;
-    async fn update_item(&self, item: &Item) -> Result<Item, Error>;
+    async fn update_item(&self, tx: &mut DatabaseTransaction, item: &Item) -> Result<Item, Error>;
 }

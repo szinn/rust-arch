@@ -63,7 +63,7 @@ pub async fn connect_database(url: &str) -> Result<Arc<RepositoryAdapters>, Erro
 
     let repository = Arc::new(Repository { database });
 
-    let item_adapter = ItemAdapterImpl::new(repository.clone());
+    let item_adapter = ItemAdapterImpl::new();
     let item_adapter: ArcBox<dyn ItemAdapter> = arcbox!(item_adapter);
 
     let adapters = Arc::new(RepositoryAdapters { repository, item_adapter });
