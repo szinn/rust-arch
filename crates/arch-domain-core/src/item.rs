@@ -36,7 +36,15 @@ impl ItemApi for ItemService {
 
     #[tracing::instrument(level = "trace", skip(self))]
     async fn get_item(&self, uuid: &Uuid) -> Result<Option<Item>, Error> {
-        match self.item_adapter.get_item(uuid).await {
+        let adapter = self.item_adapter.clone();
+        let uuid = *uuid;
+
+        let result: Result<Option<Item>, arch_db::Error> = self
+            .repository
+            .transaction(|tx| Box::pin(async move { adapter.get_item(tx, &uuid).await }))
+            .await;
+
+        match result {
             Err(err) => Err(Error::DatabaseError(err)),
             Ok(item) => Ok(item),
         }

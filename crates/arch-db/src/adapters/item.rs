@@ -32,7 +32,7 @@ impl ItemAdapterImpl {
 
 #[async_trait]
 impl ItemAdapter for ItemAdapterImpl {
-    #[tracing::instrument(level = "trace", skip(self, new_item))]
+    #[tracing::instrument(level = "trace", skip(self, tx, new_item))]
     async fn create_item(&self, tx: &mut DatabaseTransaction, new_item: &NewItem) -> Result<Item, Error> {
         let new_item = items::ActiveModel {
             version: Set(0),
@@ -46,12 +46,9 @@ impl ItemAdapter for ItemAdapterImpl {
         Ok(ItemAdapterImpl::from_model(item))
     }
 
-    #[tracing::instrument(level = "trace", skip(self))]
-    async fn get_item(&self, uuid: &Uuid) -> Result<Option<Item>, Error> {
-        let model = prelude::Items::find()
-            .filter(items::Column::Uuid.eq(*uuid))
-            .one(&self.repository.database)
-            .await?;
+    #[tracing::instrument(level = "trace", skip(self, tx))]
+    async fn get_item(&self, tx: &mut DatabaseTransaction, uuid: &Uuid) -> Result<Option<Item>, Error> {
+        let model = prelude::Items::find().filter(items::Column::Uuid.eq(*uuid)).one(tx).await?;
 
         match model {
             None => Ok(None),
