@@ -17,7 +17,7 @@ COPY . .
 RUN cargo build --release --target x86_64-unknown-linux-musl
 RUN strip /build/target/x86_64-unknown-linux-musl/release/rust-arch
 
-FROM ubuntu:latest@sha256:8a37d68f4f73ebf3d4efafbcf66379bf3728902a8038616808f04e34a9ab63ee AS ubuntu
+FROM ubuntu:latest@sha256:dfc10878be8d8fc9c61cbff33166cb1d1fe44391539243703c72766894fa834a AS ubuntu
 RUN groupadd --gid 8779 rust-arch && useradd -g 8779 -M -u 8779 -s /usr/sbin/nologin rust-arch
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 RUN update-ca-certificates
