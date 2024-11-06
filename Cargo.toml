@@ -30,7 +30,7 @@ arch-utils = { path = "crates/arch-utils" }
 
 async-trait = "0.1.81"
 serde_json = "1.0.114"
-thiserror = "1.0.63"
+thiserror = "2.0.0"
 tokio-graceful-shutdown = "0.15.0"
 tracing-log = "0.2.0"
 
